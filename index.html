@@ -1,0 +1,175 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>TRIO 3.0 · Decision Runtime</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>:root{--bg:#FFFFFF;--ink:#111111;--ink2:#555555;--ink3:#999999;--border:#DDDDDD;--paper:#F8F6F2;--paper2:#F5F5F3}*{box-sizing:border-box;margin:0;padding:0}html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:"Inter","Helvetica Neue",sans-serif;-webkit-font-smoothing:antialiased}::selection{background:var(--ink);color:var(--bg)}body.canvas-mode main{width:100vw;height:100vh;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;display:flex;scroll-behavior:smooth}body.canvas-mode main::-webkit-scrollbar{height:3px}body.canvas-mode main::-webkit-scrollbar-thumb{background:var(--border)}.slide{flex:0 0 100vw;width:100vw;height:100vh;scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6vh 8vw;position:relative;overflow:hidden;text-align:center}.slide.paper{background:var(--paper)}.slide.split{flex-direction:row;text-align:left;gap:6vw}.slide.split .half{flex:1;display:flex;flex-direction:column;justify-content:center}.slide.split .half.right{align-items:flex-start;text-align:left}.label{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--ink3);margin-bottom:40px}.hero{font-family:"Playfair Display","Times New Roman",Georgia,serif;font-weight:700;letter-spacing:-.03em;line-height:.95}.hero.xl{font-size:clamp(4rem,10vw,8rem)}.hero.lg{font-size:clamp(2.8rem,7vw,5.5rem)}.hero.md{font-size:clamp(2rem,5vw,3.8rem)}.body-text{font-family:"Inter",sans-serif;font-size:clamp(.95rem,1.5vw,1.2rem);color:var(--ink2);line-height:1.6;max-width:560px;margin:0 auto}.mono{font-family:"IBM Plex Mono",monospace}.card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:24px 0;width:100%;max-width:820px}.card{padding:32px 24px;border:1px solid var(--border);text-align:center}.card.kv{background:var(--paper);border-color:transparent}.card h4{font-family:"IBM Plex Mono",monospace;font-size:.75rem;font-weight:600;letter-spacing:.04em;margin-bottom:12px;color:var(--ink2)}.card p{font-size:.85rem;color:var(--ink2);line-height:1.7}.card .chk{color:#1a8a5a}.card .crs{color:#c0392b}.flow-v{display:flex;flex-direction:column;align-items:center;gap:4px;margin:16px 0}.flow-node{padding:8px 22px;border:1px solid var(--border);font-size:.82rem;font-weight:500;color:var(--ink);background:var(--bg)}.flow-node.ghost{border-style:dashed;color:var(--ink3);opacity:.6}.flow-node.dark{background:var(--ink);color:var(--bg);border-color:var(--ink)}.flow-arrow{color:var(--border);font-family:"IBM Plex Mono",monospace;font-size:.7rem}.stat-row{display:flex;gap:80px;justify-content:center;margin:24px 0}.stat-item{text-align:center}.stat-item .n{font-family:"Playfair Display",Georgia,serif;font-weight:800;font-size:4rem;letter-spacing:-.03em;line-height:1}.stat-item .l{font-family:"IBM Plex Mono",monospace;font-size:.6rem;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.12em;margin-top:4px}.prog{display:flex;align-items:center;gap:24px;margin:20px 0}.prog-bars{display:flex;flex-direction:column;gap:12px;flex:1;max-width:400px}.prog-bar{height:6px;background:var(--border);position:relative;border-radius:3px;overflow:hidden}.prog-bar .fill{height:100%;background:var(--ink);position:absolute;left:0;top:0}.scale{display:flex;align-items:flex-end;gap:28px;justify-content:center;margin:20px 0}.scale-step{text-align:center}.scale-step .amt{font-family:"Playfair Display",Georgia,serif;font-weight:800;letter-spacing:-.03em}.scale-step .lbl{font-family:"IBM Plex Mono",monospace;font-size:.55rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink3);margin-top:4px}.nav{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:100}.nav-dot{width:5px;height:5px;border-radius:50%;background:var(--border);cursor:pointer;transition:all .15s ease}.nav-dot.active{background:var(--ink);width:18px;border-radius:3px}.nav-hint{position:fixed;bottom:44px;left:50%;transform:translateX(-50%);font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3)}.slide [data-animate]{opacity:0;transform:translateY(20px)}.slide.active [data-animate]{opacity:1;transform:translateY(0);transition:all .6s cubic-bezier(.2,.8,.2,1)}.slide.active [data-animate]:nth-child(1){transition-delay:0ms}.slide.active [data-animate]:nth-child(2){transition-delay:80ms}.slide.active [data-animate]:nth-child(3){transition-delay:160ms}.slide.active [data-animate]:nth-child(4){transition-delay:240ms}.slide.active [data-animate]:nth-child(5){transition-delay:320ms}</style></head><body class="canvas-mode"><main id="main">
+
+<!-- 1 · Category -->
+<section class="slide">
+  <div data-animate><div class="hero xl" style="margin-bottom:4px">TRIO</div></div>
+  <div data-animate><div class="hero md" style="font-weight:300;color:var(--ink3);margin-bottom:32px">3.0</div></div>
+  <div data-animate><p class="body-text" style="font-size:1.2rem;margin-bottom:20px">Every generation of software managed something.</p></div>
+  <div data-animate><p class="body-text" style="font-size:1rem;color:var(--ink3);margin-bottom:8px">Information OS managed data.</p></div>
+  <div id="punchline" style="opacity:0;transform:translateY(60px);filter:blur(8px);transition:opacity 2s cubic-bezier(.2,.8,.2,1) .4s,transform 1.8s cubic-bezier(.16,1,.3,1) .4s,filter 1.6s ease .4s"><div class="hero md" style="font-weight:600;letter-spacing:-.02em">Decision Runtime manages judgment.</div></div>
+</section>
+
+<!-- 2 · We build judgment -->
+<section class="slide paper">
+  <div data-animate><div class="hero md" style="font-weight:300;color:var(--ink3);margin-bottom:8px">We don't build AI.</div></div>
+  <div data-animate><div class="hero md" style="margin-bottom:24px">We build judgment.</div></div>
+  <div data-animate><p class="body-text" style="font-size:.85rem;margin-bottom:12px">A system that remembers, verifies, and improves decisions over time.</p></div>
+  <div data-animate style="display:flex;align-items:center;gap:40px;font-size:.78rem">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:4px"><div class="flow-node ghost">Ask</div><span class="flow-arrow">↓</span><div class="flow-node ghost">Answer</div><span class="flow-arrow">↓</span><div class="flow-node ghost">Forget</div></div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:1.2rem;color:var(--ink3)">→</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:4px"><div class="flow-node">Observe</div><span class="flow-arrow">↓</span><div class="flow-node dark">Decide</div><span class="flow-arrow">↓</span><div class="flow-node">Verify</div><span class="flow-arrow">↓</span><div class="flow-node dark">Learn</div></div>
+  </div>
+</section>
+
+<!-- 3 · Judgment needs memory -->
+<section class="slide">
+  <div data-animate><div class="hero md" style="margin-bottom:12px">Judgment needs memory.</div></div>
+  <div class="card-grid" data-animate>
+    <div class="card"><h4>Bloomberg</h4><p>Remembers prices.<br><span class="crs">Forgets decisions.</span></p></div>
+    <div class="card"><h4>ChatGPT</h4><p>Gives advice.<br><span class="crs">Never verifies it.</span></p></div>
+    <div class="card" style="background:var(--ink);color:var(--bg);border-color:var(--ink);transform:translateY(-12px) scale(1.03)"><h4 style="color:rgba(255,255,255,.7)">TRIO 3.0</h4><p style="color:rgba(255,255,255,.9)"><span style="color:#fff;font-weight:700">✓ Registered.</span><br><span style="color:#fff;font-weight:700">✓ Verified.</span><br><span style="color:#fff;font-weight:700">✓ Calibrated.</span></p></div>
+  </div>
+  <div data-animate><p style="font-family:'IBM Plex Mono',monospace;font-size:.65rem;color:var(--ink3)">6,348 decisions · every one tracked</p></div>
+</section>
+
+<!-- 4 · Permanent record -->
+<section class="slide paper">
+  <div data-animate><div class="hero md" style="margin-bottom:28px">Every important decision<br>deserves a permanent record.</div></div>
+  <div data-animate style="display:flex;gap:48px;align-items:center;margin:20px 0">
+    <div style="text-align:center"><div style="font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--ink3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">Without Memory</div><div class="flow-v"><div class="flow-node ghost">Decision</div><div class="flow-arrow">↓</div><div class="flow-node ghost" style="font-size:.7rem">Nobody knows<br>why it happened</div></div></div>
+    <div style="text-align:center"><div style="font-family:'IBM Plex Mono',monospace;font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">With TRIO</div><div class="flow-v"><div class="flow-node dark">Decision</div><div class="flow-arrow">↓</div><div class="flow-node">Evidence</div><div class="flow-arrow">↓</div><div class="flow-node">Outcome</div><div class="flow-arrow">↓</div><div class="flow-node dark">Permanent record</div></div></div>
+  </div>
+  <div data-animate><p class="body-text" style="font-size:.85rem;margin-top:16px">6,348 decisions. Every one tracked.</p></div>
+</section>
+
+<!-- 5 · Truth compounds -->
+<section class="slide">
+  <div data-animate><div class="hero md" style="margin-bottom:8px">Truth compounds.</div></div>
+  <div data-animate><div class="hero md" style="font-weight:300;color:var(--ink3);margin-bottom:28px">Opinions don't.</div></div>
+  <div data-animate class="prog" style="margin:24px auto;max-width:500px">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--ink2);letter-spacing:.04em;display:flex;flex-direction:column;gap:14px">Dec #1<div style="height:6px"></div>Dec #346<div style="height:6px"></div>Dec #2,891<div style="height:6px"></div>Dec #6,348</div>
+    <div class="prog-bars"><div class="prog-bar"><div class="fill" style="width:58%"></div></div><div class="prog-bar"><div class="fill" style="width:69%"></div></div><div class="prog-bar"><div class="fill" style="width:74%"></div></div><div class="prog-bar" style="height:8px;border-radius:4px"><div class="fill" style="width:78%"></div></div></div>
+    <div style="text-align:right;font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--ink3);letter-spacing:.04em;display:flex;flex-direction:column;gap:8px"><div>58%</div><div style="height:10px"></div><div>69%</div><div style="height:10px"></div><div>74%</div><div style="height:10px"></div><div>78%</div></div>
+  </div>
+  <div data-animate><p style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.1rem,2vw,1.5rem);font-weight:500;color:var(--ink);margin-top:8px">78% after 6,348 decisions.<br>Every verified outcome improves the next.</p></div>
+</section>
+
+<!-- 6 · Moat -->
+<section class="slide paper">
+  <div data-animate style="overflow:hidden;width:100%"><div class="hero xl" style="font-size:clamp(5rem,14vw,12rem);margin-bottom:0;margin-left:-2vw">TIME</div></div>
+  <div data-animate><div class="hero md" style="font-weight:300;color:var(--ink3);margin-bottom:12px;font-size:clamp(1.4rem,3vw,2rem)">cannot be cloned.</div></div>
+  <div data-animate style="display:flex;gap:60px;font-size:.78rem;margin-bottom:16px">
+    <div style="text-align:center;color:var(--ink3)"><span style="font-weight:600">Others</span><br><span style="font-size:.68rem">API · Prompt · Model</span><br><span style="font-size:.6rem">3 months to copy</span></div>
+    <div style="text-align:center"><span style="font-weight:600">TRIO</span><br><span style="font-size:.68rem">180 Days · Reality · History</span><br><span style="font-size:.6rem;color:var(--ink3)">Never</span></div>
+  </div>
+  <div data-animate><p style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(1rem,1.8vw,1.3rem);font-style:italic;color:var(--ink)">You can copy software.<br>You can't copy verified history.</p></div>
+</section>
+
+<!-- 7 · Traction -->
+<section class="slide" id="traction">
+  <div data-animate><div class="hero md" style="margin-bottom:8px">Judgment compounds every day.</div></div>
+  <div data-animate><div class="hero md" style="font-weight:300;color:var(--ink3);margin-bottom:28px">A live system that learns from every decision.</div></div>
+  <div class="stat-row" data-animate>
+    <div class="stat-item"><div class="n count-up" data-target="5198">0</div><div class="l">Companies</div></div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:1.5rem;color:var(--border);align-self:center">→</div>
+    <div class="stat-item"><div class="n count-up" data-target="6348">0</div><div class="l">Judgments</div></div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:1.5rem;color:var(--border);align-self:center">→</div>
+    <div class="stat-item"><div class="n count-up" data-target="365">0</div><div class="l">Learning Days</div></div>
+  </div>
+  <div data-animate><p class="body-text" style="font-size:.85rem">Not projections. Today's dashboard.<br>Tomorrow starts with everything learned today.</p></div>
+</section>
+
+<!-- 8 · Capital Markets -->
+<section class="slide paper">
+  <div data-animate><div class="hero md" style="margin-bottom:12px">Every industry makes decisions.</div></div>
+  <div data-animate><div class="hero md" style="font-weight:300;color:var(--ink3);margin-bottom:24px">Capital markets reveal them first.</div></div>
+  <div data-animate style="width:100%;max-width:520px;margin:20px 0">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--ink3)"><span style="min-width:110px;text-align:right">Medicine</span><span style="flex:1;height:2px;background:var(--border);position:relative"><span style="position:absolute;right:-4px;top:-3px;width:8px;height:8px;border-radius:50%;background:var(--ink3)"></span></span><span style="min-width:60px">5–10 yrs</span></div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--ink3)"><span style="min-width:110px;text-align:right">Government</span><span style="flex:1;height:2px;background:var(--border);position:relative"><span style="position:absolute;right:-4px;top:-3px;width:8px;height:8px;border-radius:50%;background:var(--ink3)"></span></span><span style="min-width:60px">2–4 yrs</span></div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--ink3)"><span style="min-width:110px;text-align:right">Manufacturing</span><span style="flex:1;height:2px;background:var(--border);position:relative"><span style="position:absolute;right:-4px;top:-3px;width:8px;height:8px;border-radius:50%;background:var(--ink3)"></span></span><span style="min-width:60px">6–12 mo</span></div>
+    <div style="display:flex;align-items:center;gap:12px;font-family:'IBM Plex Mono',monospace;font-size:.6rem"><span style="min-width:110px;text-align:right;font-weight:700;color:var(--ink)">Capital Markets</span><span style="flex:1;height:4px;background:var(--ink);position:relative"><span style="position:absolute;right:-5px;top:-4px;width:12px;height:12px;border-radius:50%;background:var(--ink)"></span></span><span style="min-width:60px;font-weight:700;font-size:.7rem;color:var(--ink)">T+1</span></div>
+  </div>
+  <div data-animate><p class="body-text" style="font-size:.82rem">The highest decision-density environment on Earth.<br>If TRIO works here, it works everywhere.</p></div>
+</section>
+
+<!-- 10 · Full-Stack Runtime -->
+<section class="slide">
+  <div data-animate><div class="hero md" style="margin-bottom:4px">Five links.</div></div>
+  <div data-animate><div class="hero md" style="font-weight:300;color:var(--ink3);margin-bottom:20px">No shortcuts.</div></div>
+  <style>.pipeline-seq{opacity:0;transform:translateY(20px) scale(.96)}.slide.active .pipeline-seq{animation:pipIn .45s cubic-bezier(.2,.8,.2,1) forwards}@keyframes pipIn{to{opacity:1;transform:translateY(0) scale(1)}}.slide.active .p0{animation-delay:0ms}.slide.active .p1{animation-delay:250ms}.slide.active .p2{animation-delay:370ms}.slide.active .p3{animation-delay:620ms}.slide.active .p4{animation-delay:740ms}.slide.active .p5{animation-delay:990ms}.slide.active .p6{animation-delay:1110ms}.slide.active .p7{animation-delay:1360ms}.slide.active .p8{animation-delay:1480ms}</style>
+  <div style="display:flex;gap:18px;justify-content:center;margin:16px 0;font-family:'IBM Plex Mono',monospace;font-size:.58rem;text-align:center">
+    <div class="pipeline-seq p0" style="padding:18px 22px;border:1px solid var(--border);display:flex;flex-direction:column;gap:6px;min-width:130px"><div style="font-weight:600;font-size:.72rem;letter-spacing:.04em">Ingest</div><div style="color:var(--ink3);font-size:.6rem">5,198 Assets</div><div style="color:var(--ink3);font-size:.6rem">Every Minute</div></div>
+    <div class="pipeline-seq p1" style="align-self:center;width:28px;height:1px;background:var(--border)"></div>
+    <div class="pipeline-seq p2" style="padding:18px 22px;border:1px solid var(--border);display:flex;flex-direction:column;gap:6px;min-width:130px"><div style="font-weight:600;font-size:.72rem;letter-spacing:.04em">Analyze</div><div style="color:var(--ink3);font-size:.6rem">Deep Context</div><div style="color:var(--ink3);font-size:.6rem">15-Layer</div></div>
+    <div class="pipeline-seq p3" style="align-self:center;width:28px;height:1px;background:var(--border)"></div>
+    <div class="pipeline-seq p4" style="padding:18px 22px;border:1px solid var(--ink);display:flex;flex-direction:column;gap:6px;min-width:130px"><div style="font-weight:600;font-size:.72rem;letter-spacing:.04em">Deliberate</div><div style="color:var(--ink3);font-size:.6rem">Multi-Model</div><div style="color:var(--ink3);font-size:.6rem">Court</div></div>
+    <div class="pipeline-seq p5" style="align-self:center;color:var(--ink3);font-size:1rem">→</div>
+    <div class="pipeline-seq p6" style="padding:18px 22px;border:1px solid var(--border);display:flex;flex-direction:column;gap:6px;min-width:130px"><div style="font-weight:600;font-size:.72rem;letter-spacing:.04em">Commit</div><div style="color:var(--ink3);font-size:.6rem">Timestamped</div><div style="color:var(--ink3);font-size:.6rem">Decision</div></div>
+    <div class="pipeline-seq p7" style="align-self:center;color:var(--ink3);font-size:1rem">→</div>
+    <div class="pipeline-seq p8" style="padding:18px 22px;border:1px solid var(--border);display:flex;flex-direction:column;gap:6px;min-width:130px"><div style="font-weight:600;font-size:.72rem;letter-spacing:.04em">Verify</div><div style="color:var(--ink3);font-size:.6rem">30 Days</div><div style="color:var(--ink3);font-size:.6rem">Settlement</div></div>
+  </div>
+  <div data-animate><p style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(1rem,1.8vw,1.3rem);font-style:italic;color:var(--ink);margin-top:20px">Remove one link — and the entire trust collapses.</p></div>
+</section>
+
+<!-- 11 · Court -->
+<section class="slide paper">
+  <div data-animate><div class="hero lg" style="color:var(--ink3);line-height:.84;letter-spacing:-.04em;font-weight:500;font-size:clamp(2.8rem,7vw,5.5rem)">AGENTS<br>ARE MEETINGS.</div></div>
+  <div data-animate><div class="hero lg" style="font-size:clamp(3.2rem,7.5vw,6rem);line-height:.82;letter-spacing:-.04em">TRIO<br>IS A COURT.</div></div>
+  <div data-animate style="width:160px;height:1px;background:var(--ink);margin:16px auto"></div>
+  <p class="body-text" data-animate style="margin-top:18px;font-style:italic;font-size:1.1rem">Evidence. Cross-examination. Judgment.<br>Not voting. Not averaging.</p>
+</section>
+
+<!-- 12 · Business -->
+<section class="slide">
+  <div data-animate><div class="hero md" style="margin-bottom:24px">How judgment<br>is delivered.</div></div>
+  <div data-animate style="display:flex;gap:16px;justify-content:center;margin:16px 0">
+    <div style="padding:24px 18px;border:1px solid var(--border);text-align:center;max-width:200px"><div style="font-family:'IBM Plex Mono',monospace;font-size:.58rem;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Phase 01</div><div style="font-family:'IBM Plex Mono',monospace;font-size:.58rem;color:var(--ink3);margin-bottom:8px">Private Investors</div><div style="font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;font-weight:700;margin-bottom:6px">The Feed</div><div style="font-size:.72rem;color:var(--ink2);line-height:1.5">Daily edge.<br>Auditable record.</div><div style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;font-weight:600;margin-top:12px">¥1,999/mo</div></div>
+    <div style="align-self:center;color:var(--ink3)">→</div>
+    <div style="padding:24px 18px;border:1px solid var(--ink);text-align:center;max-width:200px"><div style="font-family:'IBM Plex Mono',monospace;font-size:.58rem;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Phase 02</div><div style="font-family:'IBM Plex Mono',monospace;font-size:.58rem;color:var(--ink3);margin-bottom:8px">Funds &amp; Banks</div><div style="font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;font-weight:700;margin-bottom:6px">The Runtime</div><div style="font-size:.72rem;color:var(--ink2);line-height:1.5">Institutional-grade<br>decision audit.</div><div style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;font-weight:600;margin-top:12px">¥9,999/mo</div></div>
+    <div style="align-self:center;color:var(--ink3)">→</div>
+    <div style="padding:24px 18px;border:1px solid var(--border);text-align:center;max-width:200px"><div style="font-family:'IBM Plex Mono',monospace;font-size:.58rem;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Phase 03</div><div style="font-family:'IBM Plex Mono',monospace;font-size:.58rem;color:var(--ink3);margin-bottom:8px">Platforms</div><div style="font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;font-weight:700;margin-bottom:6px">The Layer</div><div style="font-size:.72rem;color:var(--ink2);line-height:1.5">Embed the<br>Decision Runtime.</div><div style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;font-weight:600;margin-top:12px">Custom</div></div>
+  </div>
+  <div data-animate><p class="body-text" style="font-size:.78rem;margin-top:16px">One runtime. Infinite interfaces.<br>Each unlocks the next.</p></div>
+</section>
+
+<!-- 13 · Why Now -->
+<section class="slide paper">
+  <div data-animate style="display:flex;align-items:center;justify-content:center;gap:0;width:100%">
+    <div style="flex:1;text-align:center;padding-right:40px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--ink3);text-transform:uppercase;letter-spacing:.15em;margin-bottom:8px">Cost of Analysis</div>
+      <div class="hero xl" style="font-size:clamp(3.5rem,10vw,8rem);color:var(--ink3);font-weight:300">0</div>
+    </div>
+    <div style="width:1px;height:200px;background:var(--border)"></div>
+    <div style="flex:1;text-align:center;padding-left:40px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--ink3);text-transform:uppercase;letter-spacing:.15em;margin-bottom:8px">Demand for Trust</div>
+      <div class="hero xl" style="font-size:clamp(5rem,14vw,12rem);font-weight:900">∞</div>
+    </div>
+  </div>
+  <p class="body-text" data-animate style="margin-top:32px;font-style:italic;font-size:.85rem">The age of analysis is ending.<br>The age of accountable decisions begins.</p>
+</section>
+
+<!-- 14 · Vision -->
+<section class="slide">
+  <p data-animate style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(.85rem,1.5vw,1.2rem);font-weight:300;color:var(--ink3);margin-bottom:8vh">Every important decision<br>should be</p>
+  <div data-animate style="text-align:center;margin-bottom:8vh">
+    <div id="v1" style="opacity:0;transition:opacity .8s ease"><div style="font-family:'Inter','Helvetica Neue',sans-serif;font-weight:900;font-size:clamp(3rem,7vw,5.5rem);letter-spacing:.08em;line-height:.85;text-transform:uppercase">Traceable.</div></div>
+    <div id="v2" style="opacity:0;transition:opacity .8s ease"><div style="font-family:'Inter','Helvetica Neue',sans-serif;font-weight:900;font-size:clamp(3rem,7vw,5.5rem);letter-spacing:.08em;line-height:.85;text-transform:uppercase">Auditable.</div></div>
+    <div id="v3" style="opacity:0;transition:opacity .8s ease"><div style="font-family:'Inter','Helvetica Neue',sans-serif;font-weight:900;font-size:clamp(3rem,7vw,5.5rem);letter-spacing:.08em;line-height:.85;text-transform:uppercase">Calibrated.</div></div>
+  </div>
+  <div data-animate style="position:absolute;bottom:4vh;text-align:center">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--ink3)">TRIO 3.0</div>
+    <p style="font-family:'Playfair Display',Georgia,serif;font-size:.8rem;color:var(--ink3);font-style:italic;margin-top:4px">Decision Runtime for Humanity.</p>
+  </div>
+</section>
+
+<!-- 15 · Final -->
+<section class="slide">
+  <div data-animate><div class="hero xl" style="font-size:clamp(5rem,13vw,10rem)">TRIO</div></div>
+  <div data-animate><div class="hero md" style="font-weight:300;color:var(--ink3);margin-top:8px">3.0</div></div>
+</section>
+
+<div style="position:fixed;top:8px;left:12px;z-index:999;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.04em;color:#777;background:rgba(255,255,255,.92);padding:5px 12px;border:1px solid #ddd;border-radius:3px">TRIO 3.0 · 尽调矛盾发现引擎 · Demo 级开源作品 · 页面数字为产品愿景示意（实际状态见 GitHub calibration/）</div></main><div class="nav-hint">scroll →</div><div class="nav" id="nav"></div>
+<script>(function(){const m=document.getElementById('main'),n=document.getElementById('nav'),s=m.querySelectorAll('.slide'),h=document.querySelector('.nav-hint');s.forEach((_,i)=>{const d=document.createElement('div');d.className='nav-dot';d.onclick=()=>s[i].scrollIntoView({behavior:'smooth',inline:'start'});n.appendChild(d)});const o=new IntersectionObserver((e)=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('active');const i=Array.from(s).indexOf(x.target);n.querySelectorAll('.nav-dot').forEach((d,j)=>d.classList.toggle('active',j===i));if(i>2)h.style.opacity='0'}})},{threshold:.5,root:m});s.forEach(x=>o.observe(x));document.addEventListener('keydown',e=>{const i=Array.from(s).findIndex(x=>{const r=x.getBoundingClientRect();return r.left>=-100&&r.left<=100});if(i===0&&e.key==='ArrowRight'){const p=document.getElementById('punchline');if(p&&p.style.opacity==='0'){p.style.opacity='1';p.style.transform='translateY(0)';p.style.filter='blur(0)';e.preventDefault();return}}if(e.key==='ArrowRight'&&i<s.length-1)s[i+1].scrollIntoView({behavior:'smooth',inline:'start'});if(e.key==='ArrowLeft'&&i>0)s[i-1].scrollIntoView({behavior:'smooth',inline:'start'})});const cs=document.querySelectorAll('.count-up');let cd=new Set();new IntersectionObserver((e)=>{e.forEach(x=>{if(x.isIntersecting){cs.forEach(c=>{if(!cd.has(c)){cd.add(c);const t=parseInt(c.dataset.target);const steps=[0,Math.floor(t*.03),Math.floor(t*.1),Math.floor(t*.25),Math.floor(t*.5),Math.floor(t*.78),Math.floor(t*.94),t];let si=0;function next(){if(si>=steps.length)return;c.textContent=steps[si].toLocaleString();si++;if(si===steps.length-1){setTimeout(()=>{c.textContent=(t-1).toLocaleString();setTimeout(()=>{c.textContent=t.toLocaleString()},150)},350);setTimeout(next,350+150+200)}else{setTimeout(next,si<3?600:si<5?1200:2000)}}setTimeout(next,600)}})}})}).observe(document.getElementById('traction'));const vl=document.querySelectorAll('#v1,#v2,#v3');let vd=false;new IntersectionObserver((e)=>{e.forEach(x=>{if(x.isIntersecting&&!vd){vd=true;setTimeout(()=>{vl[0].style.opacity='1';setTimeout(()=>{vl[1].style.opacity='1';setTimeout(()=>{vl[2].style.opacity='1'},900)},900)},400)}})}).observe(document.querySelectorAll('.slide')[13])})()</script></body></html>

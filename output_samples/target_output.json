@@ -1,0 +1,119 @@
+{
+  "target": "尽调标的（自述材料）",
+  "conclusion": "存在疑似矛盾点",
+  "contradiction_points": [
+    {
+      "rule_id": "R-011",
+      "rule_name": "实控人-限高失信",
+      "category": "信用法律",
+      "trigger": "法定代表人/实控人被限高或列入失信",
+      "logic": "关键人信用硬伤，与'稳健经营'自述矛盾",
+      "matched_keywords": [
+        "限高",
+        "被限高"
+      ],
+      "data_sources": [
+        "限高名单",
+        "失信被执行人名单"
+      ],
+      "severity": "high",
+      "confidence": 0.8
+    },
+    {
+      "rule_id": "R-017",
+      "rule_name": "政府背书-中标缺失",
+      "category": "市场客户",
+      "trigger": "声称政府项目/背书，但无中标或政策文件",
+      "logic": "政府资源声称缺乏公开中标/政策依据",
+      "matched_keywords": [
+        "政府背书"
+      ],
+      "data_sources": [
+        "政府采购平台",
+        "政策文件库"
+      ],
+      "severity": "high",
+      "confidence": 0.7
+    },
+    {
+      "rule_id": "R-019",
+      "rule_name": "关键材料索取不给",
+      "category": "行为验证",
+      "trigger": "索要估值证明/上会记录/订单等关键材料始终不给",
+      "logic": "关键验证材料拒绝提供 = 交叉验证失败，最强的负证据",
+      "matched_keywords": [
+        "估值证明",
+        "上会记录",
+        "索要"
+      ],
+      "data_sources": [
+        "沟通记录",
+        "材料清单"
+      ],
+      "severity": "high",
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "R-020",
+      "rule_name": "技术散射无投产",
+      "category": "行为验证",
+      "trigger": "技术方向过多但无一投产",
+      "logic": "技术叙事分散而无交付落地，'叙事方'特征",
+      "matched_keywords": [
+        "技术方向",
+        "无一投产",
+        "投产"
+      ],
+      "data_sources": [
+        "业务进展",
+        "产品上市记录"
+      ],
+      "severity": "medium",
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "R-021",
+      "rule_name": "压力测试防御反应",
+      "category": "行为验证",
+      "trigger": "被追问实质问题时攻击对接人身份/转移话题",
+      "logic": "对关键问题的防御性攻击反应，可疑信号",
+      "matched_keywords": [
+        "攻击",
+        "追问"
+      ],
+      "data_sources": [
+        "会议记录",
+        "沟通日志"
+      ],
+      "severity": "medium",
+      "confidence": 0.8
+    },
+    {
+      "rule_id": "R-022",
+      "rule_name": "条款模糊无窗口",
+      "category": "行为验证",
+      "trigger": "合作条款始终模糊（先做着后面都好说）",
+      "logic": "条款模糊且无明确窗口，合作意向弱或动机存疑",
+      "matched_keywords": [
+        "先做"
+      ],
+      "data_sources": [
+        "协议草案",
+        "谈判记录"
+      ],
+      "severity": "medium",
+      "confidence": 0.7
+    }
+  ],
+  "confidence": 0.77,
+  "rebuttal": [
+    "需调取对应公开数据源核实（见 data_sources）"
+  ],
+  "prediction_registration": {
+    "registered": true,
+    "falsification_condition": "若标的提供材料可推翻上述矛盾，则本判断被证伪",
+    "falsification_date": "30 天后回测"
+  },
+  "engine": "rule_engine",
+  "llm_note": "未配置 API key，仅使用规则引擎"
+}

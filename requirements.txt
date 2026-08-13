@@ -1,0 +1,4 @@
+# TRIO 3.0 · 依赖
+# 规则引擎部分：标准库实现，无第三方依赖
+# LLM 语义增强（可选）：需 requests + 配置 API key
+requests>=2.31
