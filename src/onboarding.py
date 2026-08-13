@@ -1,130 +1,103 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-TRIO 3.0 · 交互式引导页（onboarding）
+TRIO 3.0 · 一键尽调引导页（onboarding）
 ======================================
-用户 clone 后运行 `python src/main.py`（无参数）即进入本引导。
+用户 clone 后运行 `python src/main.py`（无参数）即进入尽调流程。
 
-引导流程：演示 → 自定义分析 → 评测复现 → LLM 配置 → 使用指南
+交互引导语：
+  输入你要尽调的企业情况与附件（粘贴文本或文件路径）
+  → TRIO 交叉比对公开数据信号 → 输出判断包 → 可选注册预测回测
 """
 import json
-import subprocess
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
 BANNER = """
-╭─────────────────────────────────────────────╮
-│   TRIO 3.0 · 尽调矛盾发现引擎               │
-│   别的 AI 让你信它，TRIO 让你验它            │
-│   每个判断都有案底，案底可被审判              │
-╰─────────────────────────────────────────────╯
+╭──────────────────────────────────────────────────╮
+│   TRIO 3.0 · 尽调矛盾发现引擎                    │
+│   给你资料，我给可证伪的判断                      │
+│   别的 AI 让你信它，TRIO 让你验它                │
+╰──────────────────────────────────────────────────╯
+"""
+
+GUIDE = """
+输入你要尽调的企业情况与附件——
+  方式1：直接粘贴企业自述 / BP / 声称（一段文字）
+  方式2：输入 .txt 文件路径（附件，UTF-8）
+  输入 q 退出
 """
 
 
-def pause():
-    input("\n按回车返回菜单...")
+def _load_input(raw: str):
+    """支持文件路径或直接文本"""
+    for cand in [Path(raw), ROOT / raw]:
+        if cand.exists() and cand.is_file():
+            try:
+                return cand.read_text(encoding="utf-8")
+            except Exception:
+                return None
+    return None
 
 
-def run_demo():
-    from main import run
-    text = (ROOT / "output_samples" / "target_input.txt").read_text(encoding="utf-8")
-    print("\n[演示] 分析某公司自述材料（命中 6 类矛盾）...\n")
-    result = run(text)
-    print(json.dumps(result, ensure_ascii=False, indent=2)[:1500])
-    print("\n（完整输出见 output_samples/target_output.json）")
-    pause()
+def _show_result(result: dict):
+    print(json.dumps(result, ensure_ascii=False, indent=2))
 
 
-def analyze_custom():
-    from main import run
-    path = input("\n请输入尽调材料文件路径（txt，UTF-8）: ").strip()
-    p = Path(path)
-    if not p.exists():
-        p = ROOT / path
-    if not p.exists():
-        print(f"\n找不到文件: {path}")
-        pause()
+def _register_prediction(result: dict) -> None:
+    """把本次判断注册为预测（30 天回测），追加到 predictions/registry.jsonl"""
+    if not result.get("prediction_registration", {}).get("registered"):
+        print("（本次未发现矛盾，无需注册预测）")
         return
-    text = p.read_text(encoding="utf-8")
-    print("\n[分析中] 规则引擎交叉比对...\n")
-    result = run(text)
-    out = input("保存结果到文件？(y/n，默认 n): ").strip().lower()
-    if out == "y":
-        save = Path("result.json")
-        save.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
-        print(f"✓ 已保存到 {save}")
-    else:
-        print(json.dumps(result, ensure_ascii=False, indent=2))
-    pause()
-
-
-def run_benchmark():
-    print("\n[评测] 复现 10 案例评测...\n")
-    subprocess.run([sys.executable, str(ROOT / "src" / "run_benchmark.py")])
-    pause()
-
-
-def llm_config():
-    print("""
-[LLM 语义增强配置]（可选，规则引擎无需此步）
-
-1. 安装依赖:   pip install -r requirements.txt
-2. 设置 key:   export DEEPSEEK_API_KEY=你的key
-3. 运行:       python src/main.py --input 材料.txt
-                （有 key 时自动启用 LLM 交叉验证）
-
-配置项（环境变量）:
-  DEEPSEEK_API_KEY   必需
-  LLM_BASE_URL       默认 https://api.deepseek.com/v1/chat/completions
-  LLM_MODEL          默认 deepseek-chat
-
-Windows PowerShell 用 $env:DEEPSEEK_API_KEY="你的key"
-""")
-    pause()
-
-
-def show_guide():
-    print("\n[使用指南] 完整说明见 docs/USAGE.md，要点：\n")
-    print("  python src/main.py --demo           # 跑演示")
-    print("  python src/main.py --input 材料.txt  # 自定义分析")
-    print("  python src/main.py --output 结果.json # 保存结果")
-    print("  python src/run_benchmark.py          # 复现评测")
-    pause()
-
-
-MENU = """
-请选择操作：
-  [1] 跑演示案例（某公司，命中 6 类矛盾）
-  [2] 分析我的尽调材料
-  [3] 复现 10 案例评测
-  [4] 配置 LLM 语义增强（可选）
-  [5] 查看使用指南
-  [0] 退出
-你的选择: """
+    ts = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    entry = {
+        "id": f"ONBOARD-{ts[:10]}",
+        "target": "用户提交的尽调标的（匿名）",
+        "predicted_at": ts,
+        "prediction": "high_risk" if result.get("confidence", 0) >= 0.6 else "watch",
+        "confidence": result.get("confidence", 0),
+        "falsification_date": "30 天后回测",
+        "status": "pending",
+        "outcome": None,
+        "simulated": False,
+        "note": "由一键尽调引导页注册；用户需在 VERIFICATION.md 规范下补充真实标的",
+    }
+    reg_path = ROOT / "predictions" / "registry.jsonl"
+    with open(reg_path, "a", encoding="utf-8") as f:
+        f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+    print(f"✓ 预测已注册（{entry['id']}），30 天后回测验证")
 
 
 def main() -> int:
+    from main import run
+
     print(BANNER)
+    print(GUIDE)
     while True:
-        choice = input(MENU).strip()
-        if choice == "1":
-            run_demo()
-        elif choice == "2":
-            analyze_custom()
-        elif choice == "3":
-            run_benchmark()
-        elif choice == "4":
-            llm_config()
-        elif choice == "5":
-            show_guide()
-        elif choice == "0":
+        raw = input("> ").strip()
+        if raw.lower() in ("q", "quit", "退出"):
             print("\n再见。用 TRIO 验证你的每个判断。\n")
             return 0
-        else:
-            print("无效选择，请重试。")
+        if not raw:
+            continue
+
+        text = _load_input(raw)
+        if text is None:
+            text = raw  # 直接当文本处理
+
+        print("\n[分析中] 交叉比对公开数据信号...\n")
+        result = run(text)
+        _show_result(result)
+
+        if result.get("prediction_registration", {}).get("registered"):
+            if input("\n是否注册预测（30 天回测验证判断）？(y/n): ").strip().lower() == "y":
+                _register_prediction(result)
+
+        print("\n" + "=" * 50)
 
 
 if __name__ == "__main__":
