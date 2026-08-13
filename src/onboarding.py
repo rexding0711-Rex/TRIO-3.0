@@ -27,8 +27,8 @@ BANNER = """
 
 GUIDE = """
 输入你要尽调的企业情况与附件——
-  方式1：直接粘贴企业自述 / BP / 声称（可多行，粘贴完按 空行回车 结束）
-  方式2：输入 .txt 文件路径（Windows 用 D:\\xx.txt 或 D:/xx.txt 均可）
+  方式1（推荐）：输入 .txt 文件路径（支持 UTF-8/GBK，Windows 用 D:/xx.txt）
+  方式2：直接粘贴企业自述（可多行，单空行为段落；连续两个空行结束）
   方式3：输入 q 退出
 
 （提示：配置 DEEPSEEK_API_KEY 后，自动启用 LLM 语义增强）
@@ -40,14 +40,16 @@ def _is_quit(raw: str) -> bool:
 
 
 def _read_file_text(raw: str):
-    """解析路径（兼容 Windows 反斜杠），存在则返回文件内容"""
+    """解析路径（兼容 Windows 反斜杠），尝试多编码读取（UTF-8/GBK/GB18030）"""
     norm = raw.replace("\\", "/")
     for cand in [Path(norm), ROOT / norm]:
         if cand.exists() and cand.is_file():
-            try:
-                return cand.read_text(encoding="utf-8")
-            except Exception:
-                return None
+            for enc in ("utf-8", "gbk", "gb18030", "latin-1"):
+                try:
+                    return cand.read_text(encoding=enc)
+                except UnicodeDecodeError:
+                    continue
+            return None
     return None
 
 
@@ -75,15 +77,24 @@ def _read_material():
 
     # 非路径 → 多行粘贴收集（空行结束）
     lines = [first]
-    print("  （继续粘贴，空行回车结束）")
+    print("  （继续粘贴，单空行为段落分隔；连续两个空行结束）")
     while True:
         try:
             more = input().rstrip("\n")
         except (EOFError, KeyboardInterrupt):
             break
         if more.strip() == "":
-            break
-        lines.append(more)
+            # 空行：确认是否结束（连续两空行）还是段落分隔
+            try:
+                nxt = input().rstrip("\n")
+            except (EOFError, KeyboardInterrupt):
+                break
+            if nxt.strip() == "":
+                break
+            lines.append("")
+            lines.append(nxt)
+        else:
+            lines.append(more)
     return "\n".join(lines), False
 
 
