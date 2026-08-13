@@ -159,8 +159,9 @@ def main() -> int:
     elif args.input:
         claim_text = Path(args.input).read_text(encoding="utf-8")
     else:
-        parser.print_help()
-        return 1
+        # 无参数 → 一键进入交互引导页（onboarding）
+        from onboarding import main as onboarding_main
+        return onboarding_main()
 
     result = run(claim_text)
     out = json.dumps(result, ensure_ascii=False, indent=2)

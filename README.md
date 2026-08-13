@@ -18,12 +18,15 @@ TRIO 用 22 条规则、47 秒发现：他的"战略合作方"公开记录查无
 - 通用 LLM = **建议器**（给结论，从不验证）
 - TRIO 3.0 = **审讯官**（主动交叉比对，找出"说的"和"事实"的撕裂，并为自己判断负责）
 
-## 快速开始（可运行）
+## 快速开始（可运行 · 一键体验）
 
 ```bash
-# 规则引擎（标准库实现，无第三方依赖）
-python src/main.py --demo                                        # 某公司案例演示（已跑通）
-python src/main.py --input 材料.txt --output result.json          # 自定义材料
+# 一键进入引导页（clone 后直接运行，交互式引导你上手）
+python src/main.py
+
+# 或直接指定模式：
+python src/main.py --demo                        # 跑某公司演示案例（已跑通）
+python src/main.py --input 材料.txt              # 自定义尽调材料
 # 示例输出见 output_samples/target_output.json（命中 6 类矛盾，置信度 0.77）
 
 # LLM 语义增强（可选，需 API key）

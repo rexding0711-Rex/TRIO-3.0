@@ -18,11 +18,13 @@
 git clone https://github.com/rexding0711-Rex/TRIO-3.0.git
 cd TRIO-3.0
 
-# 2. 跑内置演示（某公司案例，命中 6 类矛盾）
-python src/main.py --demo
+# 2. 一键体验（推荐）：进入交互引导页
+python src/main.py
+# → 菜单：跑演示 / 分析自定义材料 / 复现评测 / 配置 LLM / 看指南
 
-# 3. 跑自定义材料（把标的自述材料存成 材料.txt）
-python src/main.py --input 材料.txt --output result.json
+# 3. 或直接指定模式：
+python src/main.py --demo                        # 跑内置演示（命中 6 类矛盾）
+python src/main.py --input 材料.txt --output result.json   # 自定义材料
 # → 得到判断包 JSON：结论 / 矛盾点 / 置信度 / 预测注册
 ```
 
