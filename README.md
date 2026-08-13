@@ -56,7 +56,7 @@ export DEEPSEEK_API_KEY=xxx
 | `predictions/` | 预测注册表 + git 公证机制 |
 | `calibration/` | 校准曲线 + 机制演示说明 |
 | `compliance/` | 数据来源 / 隐私 / 边界 / 免责 |
-| `docs/` | 初赛方案 / 技术文档 / Demo 脚本 |
+| `docs/` | 初赛方案 / 技术文档 / Demo 脚本 / **使用指南 USAGE.md** |
 | `output_samples/` | 某公司案例完整输出（评委无需 key 可看） |
 
 ## License
